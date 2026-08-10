@@ -410,6 +410,78 @@
         .social-btn:active {
             transform: scale(0.92) translateY(0);
         }
+
+        /* Image Lightbox Modal Styles */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 11, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8),
+                        0 0 30px rgba(0, 240, 255, 0.3);
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .image-modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-caption {
+            margin-top: 15px;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 2rem;
+            color: #ffffff;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg);
+        }
     </style>
 </head>
 <body>
@@ -548,7 +620,14 @@
         </div>
     </div>
 
-    <!-- Script JavaScript untuk Otomatis BGM & Interaksi -->
+    <!-- Image Modal Viewer -->
+    <div class="image-modal" id="imageModal" onclick="closeModal()">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImg" alt="Enlarged Photo">
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
+
+    <!-- Script JavaScript untuk Otomatis BGM & Interaksi Galeri -->
     <script>
         const bgm = document.getElementById('bgmAudio');
         const bgmBtn = document.getElementById('bgmBtn');
@@ -591,6 +670,35 @@
                     bgmBtn.classList.remove('playing');
                     bgmText.innerText = "BGM: Paused (Track Playing)";
                 });
+            }
+        });
+
+        // Fitur Click to View Image (Modal Lightbox)
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalCaption = document.getElementById('modalCaption');
+        const memoryItems = document.querySelectorAll('.memory-item');
+
+        memoryItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation(); // Mencegah pemicu event click body
+                const img = item.querySelector('img');
+                const caption = item.querySelector('.memory-caption');
+                
+                modalImg.src = img.src;
+                modalCaption.innerText = caption ? caption.innerText : '';
+                modal.classList.add('show');
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('show');
+        }
+
+        // Menutup modal dengan tombol ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
             }
         });
     </script>
