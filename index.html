@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syyn | Personal Space</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #05050b;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glowing Spheres Background */
+        .background-glow {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .glow-1 {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #ff007f 0%, rgba(255,0,127,0) 70%);
+            top: 5%;
+            left: 10%;
+            filter: blur(90px);
+            opacity: 0.6;
+            animation: pulse-glow-1 8s infinite alternate ease-in-out;
+        }
+
+        .glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #00f0ff 0%, rgba(0,240,255,0) 70%);
+            bottom: 5%;
+            right: 10%;
+            filter: blur(100px);
+            opacity: 0.5;
+            animation: pulse-glow-2 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulse-glow-1 {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.5; }
+            100% { transform: scale(1.3) translate(30px, 40px); opacity: 0.8; }
+        }
+
+        @keyframes pulse-glow-2 {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+            100% { transform: scale(1.2) translate(-30px, -30px); opacity: 0.7; }
+        }
+
+        /* Floating BGM Controller Card */
+        .bgm-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .bgm-control:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .bgm-icon {
+            font-size: 1.1rem;
+            animation: spin 4s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .bgm-control.playing .bgm-icon {
+            animation-play-state: running;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .bgm-text {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #e2e8f0;
+        }
+
+        /* Main Glass Card Container */
+        .glass-card {
+            width: 100%;
+            max-width: 620px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6),
+                        inset 0 0 20px rgba(255, 255, 255, 0.02);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Profile Header Section */
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 16px;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background-color: #10b981;
+            border: 3px solid #05050b;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 30%, #a5f3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .profile-bio {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 420px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #38bdf8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38bdf8;
+        }
+
+        /* Dividers & Titles */
+        .section-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.02));
+            margin: 25px 0;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ff75c3;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 20px rgba(255, 117, 195, 0.4);
+        }
+
+        /* Media Elements & Hover Effects */
+        .media-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .audio-item {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .audio-item:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .song-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .song-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #f1f5f9;
+        }
+
+        .badge-bgm {
+            font-size: 0.65rem;
+            background: rgba(255, 0, 127, 0.2);
+            border: 1px solid #ff007f;
+            color: #ff75c3;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        audio {
+            height: 36px;
+            outline: none;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+        }
+
+        /* Video Container */
+        .video-wrapper {
+            width: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .video-wrapper:hover {
+            border-color: rgba(255, 117, 195, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5),
+                        0 0 25px rgba(255, 117, 195, 0.2);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+            border-radius: 18px;
+        }
+
+        /* Photo Memories / Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .memory-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .memory-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .memory-item:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.5);
+            box-shadow: 0 10px 25px rgba(0, 240, 255, 0.2);
+        }
+
+        .memory-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .memory-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            font-size: 0.75rem;
+            color: #ffffff;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .memory-item:hover .memory-caption {
+            opacity: 1;
+        }
+
+        /* Footer Socials */
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Glowing Spheres -->
+    <div class="background-glow">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+    </div>
+
+    <!-- Floating Backsound Controller Button -->
+    <div class="bgm-control" id="bgmBtn" onclick="toggleBGM()">
+        <span class="bgm-icon">🎵</span>
+        <span class="bgm-text" id="bgmText">BGM: Playing...</span>
+    </div>
+
+    <!-- Audio Element untuk Backsound (Serana) -->
+    <audio id="bgmAudio" loop>
+        <source src="serana.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Main Glass Personal Card -->
+    <div class="glass-card">
+        
+        <!-- Profile Header Section -->
+        <div class="profile-section">
+            <div class="avatar-wrapper">
+                <img src="pct.jpeg" alt="Syyn's Photo" class="avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'">
+                <div class="status-badge" title="Online / Listening"></div>
+            </div>
+            
+            <h1 class="profile-name">Syyn ✨</h1>
+            <p class="profile-bio">Welcome to my personal space! Music enthusiast, movie lover, and tech explorer. Feel free to explore my favorite playlist.</p>
+
+            <div class="tags">
+                <a href="https://instagram.com/itsjust_ayy06" target="_blank" class="tag tag-link">
+                    📸 @itsjust_ayy06
+                </a>
+                <a href="https://tiktok.com/@ayy.cryy" target="_blank" class="tag tag-link">
+                    🎵 @syyn_
+                </a>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Favorite Music Playlist Section -->
+        <h2 class="section-title">🎵 Favorite Tracks</h2>
+
+        <div class="media-group">
+            <div class="audio-item">
+                <div class="song-info">
+                    <span class="song-name">Serana</span>
+                    <span class="badge-bgm">Active BGM</span>
+                </div>
+                <audio controls id="seranaPlayer">
+                    <source src="serana.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <div class="audio-item">
+                <span class="song-name">Karna Ada Ko</span>
+                <audio controls>
+                    <source src="karnaadako.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <div class="audio-item">
+                <span class="song-name">Duka</span>
+                <audio controls>
+                    <source src="duka.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Favorite Film Section -->
+        <h2 class="section-title">🎬 Favorite Film</h2>
+
+        <div class="video-wrapper">
+            <video controls>
+                <source src="tungguaku.mp4" type="video/mp4">
+                Browsermu tidak mendukung pemutar video.
+            </video>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Photo Memories / Gallery Section -->
+        <h2 class="section-title">📸 Memories & Moments</h2>
+
+        <div class="gallery-grid">
+            <!-- Ganti file memory1.jpg, dst. dengan foto-fotomu -->
+            <div class="memory-item">
+                <img src="a1.png" alt="Memory 1" onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">^-^ ✨</div>
+            </div>
+            <div class="memory-item">
+                <img src="a2.png" alt="Memory 2" onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">piecee🌌</div>
+            </div>
+            <div class="memory-item">
+                <img src="a3.png" alt="Memory 3" onerror="this.src='https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">hi!🎧</div>
+            </div>
+        </div>
+
+        <!-- Social Links Footer -->
+        <div class="footer-socials">
+            <a href="https://instagram.com/itsjust_ayy06" target="_blank" class="social-btn">Instagram</a>
+            <a href="https://tiktok.com/@ayy.cryy" target="_blank" class="social-btn">TikTok</a>
+        </div>
+    </div>
+
+    <!-- Script JavaScript untuk Otomatis BGM & Interaksi -->
+    <script>
+        const bgm = document.getElementById('bgmAudio');
+        const bgmBtn = document.getElementById('bgmBtn');
+        const bgmText = document.getElementById('bgmText');
+        let hasInteracted = false;
+
+        // Fungsi Memutar BGM
+        function playBGM() {
+            bgm.play().then(() => {
+                bgmBtn.classList.add('playing');
+                bgmText.innerText = "BGM: Playing";
+            }).catch(err => {
+                bgmText.innerText = "Click anywhere to play BGM 🎵";
+            });
+        }
+
+        // Fungsi Toggle Play / Pause BGM lewat tombol di pojok kanan atas
+        function toggleBGM() {
+            if (bgm.paused) {
+                playBGM();
+            } else {
+                bgm.pause();
+                bgmBtn.classList.remove('playing');
+                bgmText.innerText = "BGM: Paused";
+            }
+        }
+
+        // Trik Autoplay Browser Modern
+        document.addEventListener('click', () => {
+            if (!hasInteracted) {
+                hasInteracted = true;
+                if (bgm.paused) {
+                    playBGM();
+                }
+            }
+        }, { once: true });
+
+        // Apabila pemutar audio mandiri di-play, matikan BGM agar suara tidak bertumpuk
+        const allAudios = document.querySelectorAll('audio');
+        allAudios.forEach(audio => {
+            if (audio !== bgm) {
+                audio.addEventListener('play', () => {
+                    bgm.pause();
+                    bgmBtn.classList.remove('playing');
+                    bgmText.innerText = "BGM: Paused (Track Playing)";
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
