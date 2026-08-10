@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Syyn | Personal Space</title>
+    <!-- CDN Font Awesome untuk Ikon Media Sosial -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -192,7 +194,7 @@
 
         .tags {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -200,17 +202,21 @@
         .tag {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 4px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.75rem;
-            color: #38bdf8;
+            font-size: 0.8rem;
+            color: #ffffff;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             transition: all 0.3s ease;
         }
 
         .tag:hover {
-            background: rgba(56, 189, 248, 0.2);
-            border-color: #38bdf8;
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
         }
 
         /* Dividers & Titles */
@@ -313,7 +319,7 @@
         /* Photo Memories / Gallery Section */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
             gap: 12px;
             margin-top: 10px;
         }
@@ -373,20 +379,36 @@
         }
 
         .social-btn {
-            color: rgba(255, 255, 255, 0.6);
+            color: #ffffff;
             text-decoration: none;
-            font-size: 0.85rem;
-            padding: 6px 14px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             transition: all 0.3s ease;
         }
 
-        .social-btn:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.25);
+        .social-btn.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-color: transparent;
+            box-shadow: 0 8px 20px rgba(220, 39, 67, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .social-btn.tiktok:hover {
+            background: #000000;
+            border-color: #00f2fe;
+            box-shadow: -2px 2px 12px rgba(0, 242, 254, 0.5), 2px -2px 12px rgba(254, 44, 85, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .social-btn:active {
+            transform: scale(0.92) translateY(0);
         }
     </style>
 </head>
@@ -423,11 +445,11 @@
             <p class="profile-bio">Welcome to my personal space! Music enthusiast, movie lover, and tech explorer. Feel free to explore my favorite playlist.</p>
 
             <div class="tags">
-                <a href="https://instagram.com/itsjust_ayy06" target="_blank" class="tag tag-link">
-                    📸 @itsjust_ayy06
+                <a href="https://instagram.com/itsjust_ayy06" target="_blank" class="tag">
+                    <i class="fa-brands fa-instagram" style="color: #e1306c;"></i> @itsjust_ayy06
                 </a>
-                <a href="https://tiktok.com/@ayy.cryy" target="_blank" class="tag tag-link">
-                    🎵 @syyn_
+                <a href="https://tiktok.com/@ayy.cryy" target="_blank" class="tag">
+                    <i class="fa-brands fa-tiktok" style="color: #00f2fe;"></i> @syyn_
                 </a>
             </div>
         </div>
@@ -477,11 +499,10 @@
 
         <hr class="section-divider">
 
-        <!-- Photo Memories / Gallery Section -->
+        <!-- Photo Memories / Gallery Section (Total 10 Album Foto) -->
         <h2 class="section-title">📸 Memories & Moments</h2>
 
         <div class="gallery-grid">
-            <!-- Ganti file memory1.jpg, dst. dengan foto-fotomu -->
             <div class="memory-item">
                 <img src="a1.png" alt="Memory 1" onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80'">
                 <div class="memory-caption">^-^ ✨</div>
@@ -495,15 +516,43 @@
                 <div class="memory-caption">hi!🎧</div>
             </div>
             <div class="memory-item">
-                <img src="a4.png" alt="Memory 3" onerror="this.src='https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=400&q=80'">
-                <div class="memory-caption">hi!🎧</div>
+                <img src="a4.png" alt="Memory 4" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">vibes🌊</div>
+            </div>
+            <div class="memory-item">
+                <img src="a5.png" alt="Memory 5" onerror="this.src='https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">stargazing✨</div>
+            </div>
+            <div class="memory-item">
+                <img src="a6.png" alt="Memory 6" onerror="this.src='https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">night life🎶</div>
+            </div>
+            <div class="memory-item">
+                <img src="a7.png" alt="Memory 7" onerror="this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">chill time☕</div>
+            </div>
+            <div class="memory-item">
+                <img src="a8.png" alt="Memory 8" onerror="this.src='https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">acoustic🎸</div>
+            </div>
+            <div class="memory-item">
+                <img src="a9.png" alt="Memory 9" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">lights💡</div>
+            </div>
+            <div class="memory-item">
+                <img src="a10.png" alt="Memory 10" onerror="this.src='https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=400&q=80'">
+                <div class="memory-caption">memories🖤</div>
             </div>
         </div>
 
         <!-- Social Links Footer -->
         <div class="footer-socials">
-            <a href="https://instagram.com/itsjust_ayy06" target="_blank" class="social-btn">Instagram</a>
-            <a href="https://tiktok.com/@ayy.cryy" target="_blank" class="social-btn">TikTok</a>
+            <a href="https://instagram.com/itsjust_ayy06" target="_blank" class="social-btn instagram">
+                <i class="fa-brands fa-instagram"></i> Instagram
+            </a>
+            <a href="https://tiktok.com/@ayy.cryy" target="_blank" class="social-btn tiktok">
+                <i class="fa-brands fa-tiktok"></i> TikTok
+            </a>
         </div>
     </div>
 
@@ -514,7 +563,6 @@
         const bgmText = document.getElementById('bgmText');
         let hasInteracted = false;
 
-        // Fungsi Memutar BGM
         function playBGM() {
             bgm.play().then(() => {
                 bgmBtn.classList.add('playing');
@@ -524,7 +572,6 @@
             });
         }
 
-        // Fungsi Toggle Play / Pause BGM lewat tombol di pojok kanan atas
         function toggleBGM() {
             if (bgm.paused) {
                 playBGM();
@@ -535,7 +582,6 @@
             }
         }
 
-        // Trik Autoplay Browser Modern
         document.addEventListener('click', () => {
             if (!hasInteracted) {
                 hasInteracted = true;
@@ -545,7 +591,6 @@
             }
         }, { once: true });
 
-        // Apabila pemutar audio mandiri di-play, matikan BGM agar suara tidak bertumpuk
         const allAudios = document.querySelectorAll('audio');
         allAudios.forEach(audio => {
             if (audio !== bgm) {
